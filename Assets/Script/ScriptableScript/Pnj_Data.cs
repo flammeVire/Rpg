@@ -6,7 +6,10 @@ using UnityEngine;
 public class Pnj_Data : ScriptableObject
 {
     public string Name;
+    [HideInInspector]public int ID;
+    public GameObject Mesh;
     public float PV;
+    public float CurrentPV;
     public float Def;
     public float Speed = 3;
 
@@ -21,11 +24,12 @@ public class Attaque
 {
     public TypeOfAttack attack;
 
-    public int Damage;
-    [Range(1,3)]public int Target;
+    public int DamagePerAttack;
+    [Range(1,3)]public int NumberOfTarget;
 
     [Header("Range")]
     [SerializeField] public int maxBullet;
+    [SerializeField] public int NumberBulletShoot;
     [HideInInspector] public int currentBullet;
 
     [Header("Spell")]
@@ -46,8 +50,7 @@ public class Attaque
     {
         Range,
         Close,
-        Support,
-        Buff,
+        Spell,
     }
 
 }
