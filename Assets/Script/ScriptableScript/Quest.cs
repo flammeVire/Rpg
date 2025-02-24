@@ -9,6 +9,7 @@ public class Quest : ScriptableObject
     public int questID;
     [SerializeField] string Name;
     [SerializeField] int CurrentStep;
+    [SerializeField] StepQuest[] Step;
     [SerializeField] string[] Description;
     [SerializeField] public bool[] Finish;
 
@@ -20,4 +21,17 @@ public class Quest : ScriptableObject
         Pick,
         Other,
     }
+}
+
+[System.Serializable]
+public class StepQuest
+{
+    public string NameOfTarget;
+    [Header("Pick")]
+    public int ItemID;
+
+    [Header("KillQuest")]
+    public int KillRequire;
+
+
 }
