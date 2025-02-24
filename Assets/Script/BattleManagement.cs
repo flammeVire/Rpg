@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using static Attaque;
 
 public class BattleManagement : MonoBehaviour
 {
@@ -39,7 +40,7 @@ public class BattleManagement : MonoBehaviour
     IEnumerator Player_Turn()
     {
         yield return null;
-            myself = OrderForCombat();
+        myself = OrderForCombat();
         if (AllieList.Contains(myself))
         {
 
@@ -48,8 +49,23 @@ public class BattleManagement : MonoBehaviour
             yield return new WaitUntil(() => IsTargetSelected);
             Debug.Log("target selected");
             Attack();
+
+            IsAttackSelected = false;
+            AttaqueSelected = null;
+            IsTargetSelected = false;
+            Target = null;
             Debug.Log("fin attaque");
         }
+        else
+        {
+            IATurn();///
+        }
+        myself.Speed *= -1;
+        StartCoroutine(Player_Turn());
+    }
+    private void IATurn()
+    {
+        
     }
     IEnumerator Ennemis_Turn()
     {
@@ -117,7 +133,20 @@ public class BattleManagement : MonoBehaviour
 
     void Attack()
     {
-
+        //attaque selected = attaque(on connais déjà, ennemi on connais, savoir type de l'attaque et euhhh aussi euhh rajouter le nombre de target(attaque de zone/attaque ciblée).
+        if (AttaqueSelected.attack == Attaque.TypeOfAttack.Spell)
+        {
+            Spell(AttaqueSelected, Target);
+        }
+        else if (AttaqueSelected.attack == Attaque.TypeOfAttack.Range)
+        {
+            RangeAttack(AttaqueSelected, Target);
+        }
+        else if (AttaqueSelected.attack == Attaque.TypeOfAttack.Close)
+        {
+            CloseAttack(AttaqueSelected, Target);
+        }
+;
     }
 
     void CloseAttack(Attaque me, Pnj_Data target)
@@ -125,11 +154,15 @@ public class BattleManagement : MonoBehaviour
         Debug.Log("close attack");
         if (target.Def > 0)
         {
+            Debug.Log("target def == " +  target.Def);
             target.Def -= me.DamagePerAttack;
+            Debug.Log("target def == " +  target.Def);
         }
         else
         {
-            target.PV -= me.DamagePerAttack;
+            Debug.Log("target pv == " + target.CurrentPV);
+            target.CurrentPV -= me.DamagePerAttack;
+            Debug.Log("target pv == " + target.CurrentPV);
         }
     }
 
@@ -140,17 +173,22 @@ public class BattleManagement : MonoBehaviour
         {
             if (target.Def > 0)
             {
+                Debug.Log("target def == " + target.Def);
                 target.Def -= me.DamagePerAttack;
+                Debug.Log("target def == " + target.Def);
             }
             else
             {
-                target.PV -= me.DamagePerAttack;
+                Debug.Log("target pv == " + target.CurrentPV);
+                target.CurrentPV -= me.DamagePerAttack;
+                Debug.Log("target pv == " + target.CurrentPV);
             }
         }
     }
 
     void Spell(Attaque me, Pnj_Data target)
     {
+        /*
         switch (me.effect)
         {
             case Attaque.Stat_Effect.Speed:
@@ -167,17 +205,32 @@ public class BattleManagement : MonoBehaviour
             default:
                 Debug.LogError("Spell Not Found");
                 break;
+        }*/
+
+
+        if (me.effect == Stat_Effect.Speed)
+        {
+            target.Speed += me.IsTargetAllies ? me.Modifier : -me.Modifier;
+            Debug.Log("ca marche ou bien");
         }
+        else if (me.effect == Stat_Effect.Def)
+        {
+            target.Def += me.IsTargetAllies ? me.Modifier : -me.Modifier;
+            Debug.Log("ca marche ou bien mais pas pareil");
+        }
+
     }
 
     #endregion
 
     #region BeforeCombat
+
+    /// <summary>
+    /// initalisez current pv
+    /// </summary>
+
     void GetFighter()
     {
-        /// <summary>
-        /// get fighter from GameManager
-        /// </summary>
 
         for (int i = 0; i < GameManager.instance.HeroTeam.Length; i++)
         {

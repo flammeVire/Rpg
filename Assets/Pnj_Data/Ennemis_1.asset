@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Ennemis_1
   m_EditorClassIdentifier: 
   Name: oui
+  ID: 0
   Mesh: {fileID: 6622956925530373361, guid: e655f468381d9694fa02442a9f1d0e20, type: 3}
   PV: 50
-  Def: 62
+  CurrentPV: 0
+  Def: 10
   Speed: 2
   FirstAttack:
     attack: 0
@@ -40,7 +42,7 @@ MonoBehaviour:
   ThirdAttack:
     attack: 0
     DamagePerAttack: 0
-    NumberOfTarget: 0
+    NumberOfTarget: 1
     maxBullet: 0
     NumberBulletShoot: 0
     currentBullet: 0
