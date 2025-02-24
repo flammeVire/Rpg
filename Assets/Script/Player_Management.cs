@@ -75,6 +75,30 @@ public class PlayerController : MonoBehaviour
                         Debug.Log("actual transform == " + actualTransform.position);
                         hit.collider.GetComponent<StartBattle>().GoToFight(actualTransform);
                     }
+
+                    if (hit.collider.gameObject.layer == 3) 
+                    {
+
+                        foreach (Quest quete in PlayerQuestManagament.instance.quests)
+                        {
+                            if (quete.type == Quest.TypeOfQuest.Talk)
+                            {
+                                for (int CurrentStep = 0; CurrentStep < quete.Step.Length; CurrentStep++)
+                                {
+                                    if (quete.Step[CurrentStep].NameOfTarget == hit.collider.name)
+                                    {
+                                        Debug.Log("PNJ quête détecté : " + hit.collider.name);
+                                        quete.Finish[CurrentStep] = true;
+                                    }
+                                }
+                            }
+                        
+                            //for ()                        
+                        
+                        }
+
+
+                    }
                 }
             }
         }

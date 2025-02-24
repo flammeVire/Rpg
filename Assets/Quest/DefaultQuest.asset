@@ -12,10 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 815febc0fc9e1ba48a574b200bec0ecd, type: 3}
   m_Name: DefaultQuest
   m_EditorClassIdentifier: 
-  type: 0
+  type: 1
   questID: -1
-  Name: test
+  Name: "Parler \xE0 Bob"
   CurrentStep: 0
+  Step:
+  - NameOfTarget: Bob
+    ItemID: 0
+    KillRequire: 0
   Description:
-  - ceci est la description du test
+  - ceci est la description de Bob
   Finish: 00
