@@ -18,7 +18,8 @@ public class BattleManagement : MonoBehaviour
     List<Pnj_Data> EnnemisList = new List<Pnj_Data>();
     List<Pnj_Data> AllieList = new List<Pnj_Data>();
 
-
+    int ResetSpeed;
+    int Turn;
     Pnj_Data myself;
 
     [SerializeField] GameObject[] Spawner;
@@ -30,6 +31,7 @@ public class BattleManagement : MonoBehaviour
         GetFighter();
         InitMesh();
         StartCoroutine(Player_Turn());
+        GetAllFighter();
     }
     private void Update()
     {
@@ -41,6 +43,8 @@ public class BattleManagement : MonoBehaviour
     {
         yield return null;
         myself = OrderForCombat();
+        Debug.LogWarning(myself);
+        Debug.LogWarning(myself.Speed);
         if (AllieList.Contains(myself))
         {
 
@@ -58,18 +62,54 @@ public class BattleManagement : MonoBehaviour
         }
         else
         {
-            IATurn();///
+            StartCoroutine(Ennemis_Turn());
         }
         myself.Speed *= -1;
+        ResetSpeed += 1;
+        if (ResetSpeed == allPnj.Length)
+        {
+            ResetSpeed = 0;
+            for (int i = 0; i < allPnj.Length; i++)
+            {
+                allPnj[i].Speed *= -1;
+            }
+        }
+        Debug.LogWarning(myself.Speed);
         StartCoroutine(Player_Turn());
-    }
-    private void IATurn()
-    {
-        
     }
     IEnumerator Ennemis_Turn()
     {
         yield return null;
+        Debug.Log("tour de l'ennemis");
+        int random = UnityEngine.Random.Range(0, 3);
+        if (random == 0)
+        {
+            AttaqueSelected = myself.FirstAttack;
+        }
+        else if (random == 1)
+        {
+            AttaqueSelected = myself.SecondAttack;
+        }
+        else if (random == 2)
+        {
+            AttaqueSelected = myself.ThirdAttack;
+        }
+
+        int randomtarget = UnityEngine.Random.Range(0, AllieList.Count);
+        if (randomtarget == 0)
+        {
+            Target = AllieList[randomtarget];
+        }
+        else if (randomtarget == 1)
+        {
+            Target = AllieList[randomtarget];
+        }
+        else if (randomtarget == 2)
+        {
+            Target = AllieList[randomtarget];
+        }
+        Target = AllieList[0];
+        Attack();
     }
 
     public void SelectedEnnemis()
@@ -85,7 +125,7 @@ public class BattleManagement : MonoBehaviour
                     GameObject obj = raycastHit.transform.gameObject;
                     if (obj.tag == "ennemis")
                     {
-                        
+
                         Debug.Log("aaaaaaaaaaaa");
                         GetCurrentTarget(obj);
                         IsTargetSelected = true;
@@ -93,15 +133,15 @@ public class BattleManagement : MonoBehaviour
                 }
             }
         }
-    } 
+    }
 
     void GetCurrentTarget(GameObject obj)
     {
-        for (int i = 0; i < Spawner.Length; i++) 
+        for (int i = 0; i < Spawner.Length; i++)
         {
             GameObject parent1 = obj.transform.parent.gameObject;
             GameObject parent2 = parent1.transform.parent.gameObject;
-            if(parent2 == Spawner[i].gameObject)
+            if (parent2 == Spawner[i].gameObject)
             {
                 Target = EnnemisList[i];
                 Debug.Log("EnnemisTrouvéName " + Target.Name);
@@ -154,9 +194,9 @@ public class BattleManagement : MonoBehaviour
         Debug.Log("close attack");
         if (target.Def > 0)
         {
-            Debug.Log("target def == " +  target.Def);
+            Debug.Log("target def == " + target.Def);
             target.Def -= me.DamagePerAttack;
-            Debug.Log("target def == " +  target.Def);
+            Debug.Log("target def == " + target.Def);
         }
         else
         {
@@ -274,22 +314,30 @@ public class BattleManagement : MonoBehaviour
             }
         }
     }
-    
+
     #endregion
 
-    
+    void GetAllFighter()
+    {
+        allPnj = EnnemisList.Concat(AllieList).ToArray();
+    }
 
     Pnj_Data OrderForCombat()
     {
-        allPnj = new Pnj_Data[EnnemisList.Count + AllieList.Count];
-        EnnemisList.CopyTo(allPnj, 0);
-        AllieList.CopyTo(allPnj, EnnemisList.Count);
 
-        allPnj.OrderByDescending(pnj => pnj.Speed).ToArray();
-        Debug.Log("pnj 0 = " + allPnj[0]);
-        System.Array.Reverse(allPnj);
-        Debug.Log("pnj 0 = " + allPnj[0]);
-        return allPnj[0];
+        Pnj_Data pnjGoingToPlay = allPnj[0];
+        for (int i = 0; i < allPnj.Length; i++)
+        {
+            if (allPnj[i] != null)
+            {
+                if (allPnj[i].Speed > pnjGoingToPlay.Speed)
+                {
+                    pnjGoingToPlay = allPnj[i];
+                }
+            }
+        }
+        Debug.Log("pnj going to play is: " + pnjGoingToPlay);
+        return pnjGoingToPlay;
     }
 
     void EndCombat()
