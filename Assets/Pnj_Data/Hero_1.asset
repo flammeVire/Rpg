@@ -16,9 +16,9 @@ MonoBehaviour:
   ID: 0
   Mesh: {fileID: 6219172229057180225, guid: 2dd1eb1b51f18da40aa2ef40c6ac7600, type: 3}
   PV: 100
-  CurrentPV: -39.87
+  CurrentPV: 480
   Def: 0
-  Speed: 7
+  Speed: -11
   FirstAttack:
     attack: 0
     DamagePerAttack: 15

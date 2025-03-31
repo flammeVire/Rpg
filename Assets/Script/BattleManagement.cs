@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using static Attaque;
@@ -53,7 +54,7 @@ public class BattleManagement : MonoBehaviour
             yield return new WaitUntil(() => IsTargetSelected);
             Debug.Log("target selected");
             Attack();
-
+            CheckPv(Target);
             IsAttackSelected = false;
             AttaqueSelected = null;
             IsTargetSelected = false;
@@ -74,7 +75,7 @@ public class BattleManagement : MonoBehaviour
                 allPnj[i].Speed *= -1;
             }
         }
-        Debug.LogWarning(myself.Speed);
+        Debug.LogWarning("Speed = " + myself.Speed);
         StartCoroutine(Player_Turn());
     }
     IEnumerator Ennemis_Turn()
@@ -110,6 +111,7 @@ public class BattleManagement : MonoBehaviour
         }
         Target = AllieList[0];
         Attack();
+        CheckPv(Target);
     }
 
     public void SelectedEnnemis()
@@ -300,6 +302,7 @@ public class BattleManagement : MonoBehaviour
                 child.tag = "ennemis";
                 EnnemisList[i].ID = i;
                 child.transform.SetParent(parent.transform);
+                EnnemisList[i].Mesh = child;
             }
         }
 
@@ -349,6 +352,33 @@ public class BattleManagement : MonoBehaviour
             {
                 GameManager.instance.nextEnnemis[i] = null;
             }
+        }
+    }
+    void kill(GameObject ennemis, Pnj_Data data)
+    {
+        if (EnnemisList.Contains(data))
+        {
+            EnnemisList.Remove(data);
+        }
+        else if (AllieList.Contains(data))
+        {
+            AllieList.Remove(data);
+        }
+        for(int i = 0;i < allPnj.Length;i++)
+        {
+            if (allPnj[i] != null && allPnj[i] == data)
+            {
+                allPnj[i] = null;
+            }
+        }
+        Destroy(ennemis);
+    }
+
+    void CheckPv(Pnj_Data target)
+    {
+        if(target.CurrentPV <= 0)
+        {
+            kill(target.Mesh, target);
         }
     }
 }
