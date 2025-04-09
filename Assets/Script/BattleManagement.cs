@@ -251,3 +251,4 @@ public class BattleManagement : MonoBehaviour
         }
     }
 }
+//ouais pas mal ouais//
