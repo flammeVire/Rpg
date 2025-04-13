@@ -13,7 +13,8 @@ public class Quest : ScriptableObject
     [SerializeField] public string[] Description;
     [SerializeField] public bool[] Finish;
 
-
+    public float Xp;
+    public Pnj_Data AllieAdded;
     public enum TypeOfQuest
     {
         Kill,

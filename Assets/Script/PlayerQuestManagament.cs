@@ -30,4 +30,29 @@ public class PlayerQuestManagament : MonoBehaviour
             quests.Remove(quest);
         }
     }
+
+    private void Update()
+    {
+        for (int i = 0; i < quests.Count; i++)
+        {
+            if (quests[i] != null)
+            {
+                bool allFinish = true;
+                foreach (bool finish in quests[i].Finish)
+                {
+                    if (!finish)
+                    {
+                        allFinish = false;
+                        break;
+                    }
+                }
+
+                if (allFinish)
+                {
+                    RemoveQuest(quests[i]);
+                    break;
+                }
+            }
+        }
+    }
 }

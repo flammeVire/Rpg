@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using static Attaque;
@@ -22,6 +21,8 @@ public class BattleManagement : MonoBehaviour
     int ResetSpeed;
     int Turn;
     Pnj_Data myself;
+
+    bool isCombatEnd = false;
 
     [SerializeField] GameObject[] Spawner;
     [SerializeField] GameObject Battle_Ennemis;
@@ -345,13 +346,16 @@ public class BattleManagement : MonoBehaviour
 
     void EndCombat()
     {
-        if (Input.GetKeyDown(KeyCode.Y))
+        if(AllieList.Count <= 0 || EnnemisList.Count <= 0)
         {
-            GameManager.instance.ReturnPlayerAtOldScene();
-            for (int i = 0; i < GameManager.instance.nextEnnemis.Length; i++)
+            Debug.Log("End Of Combat");
+            if (!isCombatEnd)
             {
-                GameManager.instance.nextEnnemis[i] = null;
+                StopAllCoroutines();
+                StartCoroutine(WaitToEnd());
             }
+            
+            isCombatEnd = true;
         }
     }
     void kill(GameObject ennemis, Pnj_Data data)
@@ -381,5 +385,19 @@ public class BattleManagement : MonoBehaviour
             kill(target.Mesh, target);
         }
     }
+
+    IEnumerator WaitToEnd()
+    {
+        yield return new WaitForSeconds(3f);
+        Debug.Log("AAAAAAAAAAAA");
+        if (GameManager.instance.nextEnnemis.Length > 0)
+        {
+            for (int i = 0; i < GameManager.instance.nextEnnemis.Length; i++)
+            {
+                GameManager.instance.nextEnnemis[i] = null;
+            }
+        }
+        GameManager.instance.ReturnPlayerAtOldScene();
+        
+    }
 }
-//ouais pas mal ouais//

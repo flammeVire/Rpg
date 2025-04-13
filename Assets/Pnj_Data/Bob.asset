@@ -10,28 +10,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4dd07e4c8fcd35749aca2fd39fa67274, type: 3}
-  m_Name: Hero_1
+  m_Name: Bob
   m_EditorClassIdentifier: 
-  Name: Moi
+  Name: Bob
   ID: 0
-  Mesh: {fileID: 944443381627659885, guid: b8e6281435f620045ac369847c88c90b, type: 3}
-  PV: 100
-  CurrentPV: 100
+  Mesh: {fileID: 213743372949701809, guid: 97cb63a681382534a870f0524e998507, type: 3}
+  PV: 0
+  CurrentPV: 0
   Def: 0
-  Speed: 11
+  Speed: 3
   FirstAttack:
     attack: 0
-    DamagePerAttack: 15
+    DamagePerAttack: 0
     NumberOfTarget: 1
-    maxBullet: 30
-    NumberBulletShoot: 3
+    maxBullet: 0
+    NumberBulletShoot: 0
     currentBullet: 0
     IsTargetAllies: 0
     effect: 0
     Modifier: 0
   SecondAttack:
-    attack: 1
-    DamagePerAttack: 25
+    attack: 0
+    DamagePerAttack: 0
     NumberOfTarget: 1
     maxBullet: 0
     NumberBulletShoot: 0
@@ -40,12 +40,12 @@ MonoBehaviour:
     effect: 0
     Modifier: 0
   ThirdAttack:
-    attack: 2
+    attack: 0
     DamagePerAttack: 0
-    NumberOfTarget: 3
+    NumberOfTarget: 1
     maxBullet: 0
     NumberBulletShoot: 0
     currentBullet: 0
     IsTargetAllies: 0
-    effect: 2
-    Modifier: -5
+    effect: 0
+    Modifier: 0

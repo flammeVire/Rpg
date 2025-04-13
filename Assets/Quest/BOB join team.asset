@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 815febc0fc9e1ba48a574b200bec0ecd, type: 3}
+  m_Name: BOB join team
+  m_EditorClassIdentifier: 
+  type: 1
+  questID: 1
+  Name: L'ami Bob
+  CurrentStep: 0
+  Step:
+  - NameOfTarget: Bob
+    ItemID: 0
+    KillRequire: 0
+  Description:
+  - Allez parler a Bob
+  Finish: 01
+  Xp: 3
+  AllieAdded: {fileID: 11400000, guid: 7d42e7174099782418feafde379c5713, type: 2}

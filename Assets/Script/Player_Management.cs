@@ -91,9 +91,35 @@ public class PlayerController : MonoBehaviour
                                         quete.Finish[CurrentStep] = true;
                                     }
                                 }
+                                bool allfinish = false;
+                                foreach(bool isFinish in quete.Finish)
+                                {
+                                    if (!isFinish)
+                                    {
+                                        allfinish = false;
+                                        break;
+                                    }
+                                    allfinish = true;
+                                }
+                                if (allfinish) 
+                                {
+                                    if(quete.AllieAdded != null)
+                                    {
+                                        for(int i = 0; i < GameManager.instance.HeroTeam.Length; i++)
+                                        {
+
+                                            if (GameManager.instance.HeroTeam[i] == null)
+                                            {
+                                                GameManager.instance.HeroTeam[i] = quete.AllieAdded;
+                                                hit.collider.gameObject.SetActive(false);
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         
-                            //for ()                        
+                                                 
                         
                         }
 
