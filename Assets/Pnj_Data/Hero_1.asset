@@ -18,10 +18,10 @@ MonoBehaviour:
   PV: 100
   CurrentPV: 100
   Def: 0
-  Speed: 11
+  Speed: 9
   FirstAttack:
     attack: 0
-    DamagePerAttack: 15
+    DamagePerAttack: 2
     NumberOfTarget: 1
     maxBullet: 30
     NumberBulletShoot: 3

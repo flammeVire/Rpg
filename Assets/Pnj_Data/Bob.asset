@@ -15,23 +15,23 @@ MonoBehaviour:
   Name: Bob
   ID: 0
   Mesh: {fileID: 213743372949701809, guid: 97cb63a681382534a870f0524e998507, type: 3}
-  PV: 0
-  CurrentPV: 0
-  Def: 0
-  Speed: 3
+  PV: 20
+  CurrentPV: 20
+  Def: 40
+  Speed: 5
   FirstAttack:
     attack: 0
-    DamagePerAttack: 0
+    DamagePerAttack: 3
     NumberOfTarget: 1
-    maxBullet: 0
-    NumberBulletShoot: 0
+    maxBullet: 120
+    NumberBulletShoot: 5
     currentBullet: 0
     IsTargetAllies: 0
     effect: 0
     Modifier: 0
   SecondAttack:
-    attack: 0
-    DamagePerAttack: 0
+    attack: 1
+    DamagePerAttack: 15
     NumberOfTarget: 1
     maxBullet: 0
     NumberBulletShoot: 0
@@ -41,10 +41,10 @@ MonoBehaviour:
     Modifier: 0
   ThirdAttack:
     attack: 0
-    DamagePerAttack: 0
+    DamagePerAttack: 15
     NumberOfTarget: 1
-    maxBullet: 0
-    NumberBulletShoot: 0
+    maxBullet: 1
+    NumberBulletShoot: 1
     currentBullet: 0
     IsTargetAllies: 0
     effect: 0
