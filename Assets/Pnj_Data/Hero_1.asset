@@ -13,23 +13,25 @@ MonoBehaviour:
   m_Name: Hero_1
   m_EditorClassIdentifier: 
   Name: 
+  ID: 0
   Mesh: {fileID: 6219172229057180225, guid: 2dd1eb1b51f18da40aa2ef40c6ac7600, type: 3}
   PV: 100
-  Def: 50
-  Speed: 5
+  CurrentPV: 480
+  Def: 0
+  Speed: -11
   FirstAttack:
     attack: 0
-    DamagePerAttack: 54
+    DamagePerAttack: 15
     NumberOfTarget: 1
-    maxBullet: 0
-    NumberBulletShoot: 0
+    maxBullet: 30
+    NumberBulletShoot: 3
     currentBullet: 0
     IsTargetAllies: 0
     effect: 0
     Modifier: 0
   SecondAttack:
-    attack: 0
-    DamagePerAttack: 0
+    attack: 1
+    DamagePerAttack: 25
     NumberOfTarget: 1
     maxBullet: 0
     NumberBulletShoot: 0
@@ -38,12 +40,12 @@ MonoBehaviour:
     effect: 0
     Modifier: 0
   ThirdAttack:
-    attack: 0
+    attack: 2
     DamagePerAttack: 0
-    NumberOfTarget: 0
+    NumberOfTarget: 3
     maxBullet: 0
     NumberBulletShoot: 0
     currentBullet: 0
     IsTargetAllies: 0
-    effect: 0
-    Modifier: 0
+    effect: 2
+    Modifier: -5

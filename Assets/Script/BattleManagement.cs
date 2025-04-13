@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using static Attaque;
 
 public class BattleManagement : MonoBehaviour
 {
@@ -17,7 +19,8 @@ public class BattleManagement : MonoBehaviour
     List<Pnj_Data> EnnemisList = new List<Pnj_Data>();
     List<Pnj_Data> AllieList = new List<Pnj_Data>();
 
-
+    int ResetSpeed;
+    int Turn;
     Pnj_Data myself;
 
     [SerializeField] GameObject[] Spawner;
@@ -29,6 +32,7 @@ public class BattleManagement : MonoBehaviour
         GetFighter();
         InitMesh();
         StartCoroutine(Player_Turn());
+        GetAllFighter();
     }
     private void Update()
     {
@@ -39,7 +43,9 @@ public class BattleManagement : MonoBehaviour
     IEnumerator Player_Turn()
     {
         yield return null;
-            myself = OrderForCombat();
+        myself = OrderForCombat();
+        Debug.LogWarning(myself);
+        Debug.LogWarning(myself.Speed);
         if (AllieList.Contains(myself))
         {
 
@@ -48,12 +54,64 @@ public class BattleManagement : MonoBehaviour
             yield return new WaitUntil(() => IsTargetSelected);
             Debug.Log("target selected");
             Attack();
+            CheckPv(Target);
+            IsAttackSelected = false;
+            AttaqueSelected = null;
+            IsTargetSelected = false;
+            Target = null;
             Debug.Log("fin attaque");
         }
+        else
+        {
+            StartCoroutine(Ennemis_Turn());
+        }
+        myself.Speed *= -1;
+        ResetSpeed += 1;
+        if (ResetSpeed == allPnj.Length)
+        {
+            ResetSpeed = 0;
+            for (int i = 0; i < allPnj.Length; i++)
+            {
+                allPnj[i].Speed *= -1;
+            }
+        }
+        Debug.LogWarning("Speed = " + myself.Speed);
+        StartCoroutine(Player_Turn());
     }
     IEnumerator Ennemis_Turn()
     {
         yield return null;
+        Debug.Log("tour de l'ennemis");
+        int random = UnityEngine.Random.Range(0, 3);
+        if (random == 0)
+        {
+            AttaqueSelected = myself.FirstAttack;
+        }
+        else if (random == 1)
+        {
+            AttaqueSelected = myself.SecondAttack;
+        }
+        else if (random == 2)
+        {
+            AttaqueSelected = myself.ThirdAttack;
+        }
+
+        int randomtarget = UnityEngine.Random.Range(0, AllieList.Count);
+        if (randomtarget == 0)
+        {
+            Target = AllieList[randomtarget];
+        }
+        else if (randomtarget == 1)
+        {
+            Target = AllieList[randomtarget];
+        }
+        else if (randomtarget == 2)
+        {
+            Target = AllieList[randomtarget];
+        }
+        Target = AllieList[0];
+        Attack();
+        CheckPv(Target);
     }
 
     public void SelectedEnnemis()
@@ -69,7 +127,7 @@ public class BattleManagement : MonoBehaviour
                     GameObject obj = raycastHit.transform.gameObject;
                     if (obj.tag == "ennemis")
                     {
-                        
+
                         Debug.Log("aaaaaaaaaaaa");
                         GetCurrentTarget(obj);
                         IsTargetSelected = true;
@@ -77,15 +135,15 @@ public class BattleManagement : MonoBehaviour
                 }
             }
         }
-    } 
+    }
 
     void GetCurrentTarget(GameObject obj)
     {
-        for (int i = 0; i < Spawner.Length; i++) 
+        for (int i = 0; i < Spawner.Length; i++)
         {
             GameObject parent1 = obj.transform.parent.gameObject;
             GameObject parent2 = parent1.transform.parent.gameObject;
-            if(parent2 == Spawner[i].gameObject)
+            if (parent2 == Spawner[i].gameObject)
             {
                 Target = EnnemisList[i];
                 Debug.Log("EnnemisTrouvéName " + Target.Name);
@@ -117,7 +175,20 @@ public class BattleManagement : MonoBehaviour
 
     void Attack()
     {
-
+        //attaque selected = attaque(on connais déjà, ennemi on connais, savoir type de l'attaque et euhhh aussi euhh rajouter le nombre de target(attaque de zone/attaque ciblée).
+        if (AttaqueSelected.attack == Attaque.TypeOfAttack.Spell)
+        {
+            Spell(AttaqueSelected, Target);
+        }
+        else if (AttaqueSelected.attack == Attaque.TypeOfAttack.Range)
+        {
+            RangeAttack(AttaqueSelected, Target);
+        }
+        else if (AttaqueSelected.attack == Attaque.TypeOfAttack.Close)
+        {
+            CloseAttack(AttaqueSelected, Target);
+        }
+;
     }
 
     void CloseAttack(Attaque me, Pnj_Data target)
@@ -125,11 +196,15 @@ public class BattleManagement : MonoBehaviour
         Debug.Log("close attack");
         if (target.Def > 0)
         {
+            Debug.Log("target def == " + target.Def);
             target.Def -= me.DamagePerAttack;
+            Debug.Log("target def == " + target.Def);
         }
         else
         {
-            target.PV -= me.DamagePerAttack;
+            Debug.Log("target pv == " + target.CurrentPV);
+            target.CurrentPV -= me.DamagePerAttack;
+            Debug.Log("target pv == " + target.CurrentPV);
         }
     }
 
@@ -140,17 +215,22 @@ public class BattleManagement : MonoBehaviour
         {
             if (target.Def > 0)
             {
+                Debug.Log("target def == " + target.Def);
                 target.Def -= me.DamagePerAttack;
+                Debug.Log("target def == " + target.Def);
             }
             else
             {
-                target.PV -= me.DamagePerAttack;
+                Debug.Log("target pv == " + target.CurrentPV);
+                target.CurrentPV -= me.DamagePerAttack;
+                Debug.Log("target pv == " + target.CurrentPV);
             }
         }
     }
 
     void Spell(Attaque me, Pnj_Data target)
     {
+        /*
         switch (me.effect)
         {
             case Attaque.Stat_Effect.Speed:
@@ -167,17 +247,32 @@ public class BattleManagement : MonoBehaviour
             default:
                 Debug.LogError("Spell Not Found");
                 break;
+        }*/
+
+
+        if (me.effect == Stat_Effect.Speed)
+        {
+            target.Speed += me.IsTargetAllies ? me.Modifier : -me.Modifier;
+            Debug.Log("ca marche ou bien");
         }
+        else if (me.effect == Stat_Effect.Def)
+        {
+            target.Def += me.IsTargetAllies ? me.Modifier : -me.Modifier;
+            Debug.Log("ca marche ou bien mais pas pareil");
+        }
+
     }
 
     #endregion
 
     #region BeforeCombat
+
+    /// <summary>
+    /// initalisez current pv
+    /// </summary>
+
     void GetFighter()
     {
-        /// <summary>
-        /// get fighter from GameManager
-        /// </summary>
 
         for (int i = 0; i < GameManager.instance.HeroTeam.Length; i++)
         {
@@ -207,6 +302,7 @@ public class BattleManagement : MonoBehaviour
                 child.tag = "ennemis";
                 EnnemisList[i].ID = i;
                 child.transform.SetParent(parent.transform);
+                EnnemisList[i].Mesh = child;
             }
         }
 
@@ -221,22 +317,30 @@ public class BattleManagement : MonoBehaviour
             }
         }
     }
-    
+
     #endregion
 
-    
+    void GetAllFighter()
+    {
+        allPnj = EnnemisList.Concat(AllieList).ToArray();
+    }
 
     Pnj_Data OrderForCombat()
     {
-        allPnj = new Pnj_Data[EnnemisList.Count + AllieList.Count];
-        EnnemisList.CopyTo(allPnj, 0);
-        AllieList.CopyTo(allPnj, EnnemisList.Count);
 
-        allPnj.OrderByDescending(pnj => pnj.Speed).ToArray();
-        Debug.Log("pnj 0 = " + allPnj[0]);
-        System.Array.Reverse(allPnj);
-        Debug.Log("pnj 0 = " + allPnj[0]);
-        return allPnj[0];
+        Pnj_Data pnjGoingToPlay = allPnj[0];
+        for (int i = 0; i < allPnj.Length; i++)
+        {
+            if (allPnj[i] != null)
+            {
+                if (allPnj[i].Speed > pnjGoingToPlay.Speed)
+                {
+                    pnjGoingToPlay = allPnj[i];
+                }
+            }
+        }
+        Debug.Log("pnj going to play is: " + pnjGoingToPlay);
+        return pnjGoingToPlay;
     }
 
     void EndCombat()
@@ -248,6 +352,33 @@ public class BattleManagement : MonoBehaviour
             {
                 GameManager.instance.nextEnnemis[i] = null;
             }
+        }
+    }
+    void kill(GameObject ennemis, Pnj_Data data)
+    {
+        if (EnnemisList.Contains(data))
+        {
+            EnnemisList.Remove(data);
+        }
+        else if (AllieList.Contains(data))
+        {
+            AllieList.Remove(data);
+        }
+        for(int i = 0;i < allPnj.Length;i++)
+        {
+            if (allPnj[i] != null && allPnj[i] == data)
+            {
+                allPnj[i] = null;
+            }
+        }
+        Destroy(ennemis);
+    }
+
+    void CheckPv(Pnj_Data target)
+    {
+        if(target.CurrentPV <= 0)
+        {
+            kill(target.Mesh, target);
         }
     }
 }

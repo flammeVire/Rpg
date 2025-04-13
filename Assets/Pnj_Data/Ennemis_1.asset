@@ -13,23 +13,25 @@ MonoBehaviour:
   m_Name: Ennemis_1
   m_EditorClassIdentifier: 
   Name: oui
+  ID: 0
   Mesh: {fileID: 6622956925530373361, guid: e655f468381d9694fa02442a9f1d0e20, type: 3}
   PV: 50
-  Def: 62
+  CurrentPV: 0
+  Def: 30
   Speed: 2
   FirstAttack:
     attack: 0
-    DamagePerAttack: 0
+    DamagePerAttack: 10
     NumberOfTarget: 1
-    maxBullet: 0
-    NumberBulletShoot: 0
+    maxBullet: 20
+    NumberBulletShoot: 3
     currentBullet: 0
     IsTargetAllies: 0
     effect: 0
     Modifier: 0
   SecondAttack:
-    attack: 0
-    DamagePerAttack: 0
+    attack: 1
+    DamagePerAttack: 20
     NumberOfTarget: 1
     maxBullet: 0
     NumberBulletShoot: 0
@@ -38,12 +40,12 @@ MonoBehaviour:
     effect: 0
     Modifier: 0
   ThirdAttack:
-    attack: 0
+    attack: 2
     DamagePerAttack: 0
-    NumberOfTarget: 0
+    NumberOfTarget: 2
     maxBullet: 0
     NumberBulletShoot: 0
     currentBullet: 0
     IsTargetAllies: 0
-    effect: 0
-    Modifier: 0
+    effect: 2
+    Modifier: -2
