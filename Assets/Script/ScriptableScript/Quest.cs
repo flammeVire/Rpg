@@ -7,10 +7,10 @@ public class Quest : ScriptableObject
 {
     public TypeOfQuest type;
     public int questID;
-    [SerializeField] string Name;
-    [SerializeField] int CurrentStep;
-    [SerializeField] StepQuest[] Step;
-    [SerializeField] string[] Description;
+    [SerializeField] public string Name;
+    [SerializeField] public int CurrentStep;
+    [SerializeField] public StepQuest[] Step;
+    [SerializeField] public string[] Description;
     [SerializeField] public bool[] Finish;
 
 
