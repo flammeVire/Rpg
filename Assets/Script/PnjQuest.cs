@@ -16,7 +16,7 @@ public class PnjQuest : MonoBehaviour
     {
         if (!AlreadyGiveQuest)
         {
-            //donne la quête
+            //donne la quï¿½te
             Debug.Log("giveQuest");
             return quest;
         }
@@ -62,7 +62,7 @@ public class PnjQuest : MonoBehaviour
             {
                 PlayerQuestManagament.instance.RemoveQuest(quest);
                 QuestReturned = true;
-                /// mettre ici la recompense de la quête
+                /// mettre ici la recompense de la quÃªte
             }
         }
     }
