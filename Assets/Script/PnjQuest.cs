@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,59 +12,40 @@ public class PnjQuest : MonoBehaviour
     // ajouter reward
     public void ManageQuest()
     {
-        /*
-    if (!QuestReturned)
-    {
         if (!AlreadyGiveQuest)
         {
-            //donne la qu�te
-            Debug.Log("giveQuest");
-            return quest;
-        }
-        else
-        {
-            bool QuestFinish = true;
-            foreach (bool step in quest.Finish)
-            {
-                if (!step)
-                {
-                    QuestFinish = false;
-                    break;
-                }
-            }
-            if (QuestFinish)
-            {
-                QuestReturned = true;
-                Debug.Log("questFinish");
-            }
-        }
-    }
-        */
-
-        Debug.Log("Giving Quest");
-        if (!AlreadyGiveQuest)
-        {
+            Debug.Log($"Donne la quête : {quest.questName}");
             PlayerQuestManagament.instance.AddQuest(quest);
             AlreadyGiveQuest = true;
         }
-        else
+        else if (!QuestReturned && PlayerQuestManagament.instance.IsQuestCompleted(quest))
         {
-            bool allQuestFinish = true;
-            foreach (bool step in quest.Finish)
-            {
-                if (!step)
-                {
-                    allQuestFinish = false;
-                    break;
-                }
-            }
+            Debug.Log($"Quête terminée : {quest.questName}");
+            GiveReward();
+            PlayerQuestManagament.instance.RemoveQuest(quest);
+            QuestReturned = true;
 
-            if (allQuestFinish)
+            if (quest.nextQuest != null)
             {
-                PlayerQuestManagament.instance.RemoveQuest(quest);
-                QuestReturned = true;
-                /// mettre ici la recompense de la qu�te
+                Debug.Log("Prochaine quête disponible !");
+                quest = quest.nextQuest;
+                AlreadyGiveQuest = false;
+                QuestReturned = false;
+            }
+            else
+            {
+                Debug.Log("Fin de la chaîne de quêtes.");
             }
         }
+        else
+        {
+            Debug.Log("Tu dois terminer la quête actuelle !");
+        }
+    }
+
+    void GiveReward()
+    {
+        Debug.Log("Récompense : 100 gold (test)");
     }
 }
+
