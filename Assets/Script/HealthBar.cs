@@ -3,6 +3,8 @@ using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
 {
+    public Shake shake;
+
     public Image fillImage;
     public float maxHealth = 100;
     public float currentHealth;
@@ -17,6 +19,7 @@ public class HealthBar : MonoBehaviour
     {
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        StartCoroutine(shake.Tremblement(0.2f, 4f));
         UpdateHealthUI();
     }
 
