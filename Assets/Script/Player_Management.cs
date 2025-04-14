@@ -56,6 +56,11 @@ public class PlayerController : MonoBehaviour
             Vector3 origin = transform.position; // Point de départ du cast
             Vector3 direction = transform.forward; // Direction du cast
 
+            Debug.Log(origin);
+            Debug.Log(sphereRadius);
+            Debug.Log(direction);
+            Debug.Log(castDistance);
+
             if (Physics.SphereCast(origin, sphereRadius, direction, out hit, castDistance))
             {
                 if (hit.collider.CompareTag("interractable"))
@@ -66,6 +71,7 @@ public class PlayerController : MonoBehaviour
                     //si on interragit avec un PNJ de quete
                     if (hit.collider.GetComponent<PnjQuest>() != null)
                     {
+                       
                         hit.collider.GetComponent<PnjQuest>().ManageQuest();
                     }
 
@@ -128,6 +134,13 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+    }
+
+    void OnDrawGizmos()
+    {
+        // Draw a yellow sphere at the transform's position
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(transform.position, 1);
     }
     #endregion
 }
