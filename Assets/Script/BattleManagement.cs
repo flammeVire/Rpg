@@ -23,6 +23,7 @@ public class BattleManagement : MonoBehaviour
     [SerializeField] GameObject[] Spawner;
     [SerializeField] GameObject Battle_Ennemis;
 
+    public HealthBar healthBarPlayer;
 
     private void Start()
     {
@@ -54,6 +55,8 @@ public class BattleManagement : MonoBehaviour
     IEnumerator Ennemis_Turn()
     {
         yield return null;
+        float damage = 5;
+        healthBarPlayer.TakeDamage(damage);
     }
 
     public void SelectedEnnemis()
@@ -88,7 +91,7 @@ public class BattleManagement : MonoBehaviour
             if(parent2 == Spawner[i].gameObject)
             {
                 Target = EnnemisList[i];
-                Debug.Log("EnnemisTrouvÈName " + Target.Name);
+                Debug.Log("EnnemisTrouv√©Name " + Target.Name);
             }
         }
     }
@@ -210,7 +213,7 @@ public class BattleManagement : MonoBehaviour
             }
         }
 
-        // Spawn AlliÈs
+        // Spawn Alli√©s
         for (int i = 0; i < AllieList.Count && i < 3; i++)
         {
             if (AllieList[i] != null)
