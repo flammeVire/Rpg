@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: oui
   ID: 0
-  Mesh: {fileID: 6622956925530373361, guid: e655f468381d9694fa02442a9f1d0e20, type: 3}
+  Mesh: {fileID: 919132149155446097, guid: 327aa6164c204e048aa628496c4d3157, type: 3}
   PV: 50
   CurrentPV: 0
   Def: 30
