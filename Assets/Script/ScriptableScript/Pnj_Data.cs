@@ -30,7 +30,7 @@ public class Attaque
     [Header("Range")]
     [SerializeField] public int maxBullet;
     [SerializeField] public int NumberBulletShoot;
-    [HideInInspector] public int currentBullet;
+    [SerializeField] public int currentBullet;
 
     [Header("Spell")]
     [SerializeField] public bool IsTargetAllies;
