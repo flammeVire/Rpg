@@ -22,6 +22,6 @@ MonoBehaviour:
     KillRequire: 0
   Description:
   - Allez parler a Bob
-  Finish: 01
+  Finish: 00
   Xp: 3
   AllieAdded: {fileID: 11400000, guid: 7d42e7174099782418feafde379c5713, type: 2}

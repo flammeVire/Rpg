@@ -15,10 +15,10 @@ MonoBehaviour:
   Name: Moi
   ID: 0
   Mesh: {fileID: 944443381627659885, guid: b8e6281435f620045ac369847c88c90b, type: 3}
-  PV: 100
-  CurrentPV: 100
-  Def: 0
-  Speed: 9
+  PV: 150
+  CurrentPV: 150
+  Def: 10
+  Speed: 15
   FirstAttack:
     attack: 0
     DamagePerAttack: 2

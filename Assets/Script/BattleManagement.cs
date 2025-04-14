@@ -348,7 +348,6 @@ public class BattleManagement : MonoBehaviour
     {
         if(AllieList.Count <= 0 || EnnemisList.Count <= 0)
         {
-            Debug.Log("End Of Combat");
             if (!isCombatEnd)
             {
                 StopAllCoroutines();
@@ -360,6 +359,7 @@ public class BattleManagement : MonoBehaviour
     }
     void kill(GameObject ennemis, Pnj_Data data)
     {
+        Destroy(ennemis);
         if (EnnemisList.Contains(data))
         {
             EnnemisList.Remove(data);
@@ -375,7 +375,6 @@ public class BattleManagement : MonoBehaviour
                 allPnj[i] = null;
             }
         }
-        Destroy(ennemis);
     }
 
     void CheckPv(Pnj_Data target)
