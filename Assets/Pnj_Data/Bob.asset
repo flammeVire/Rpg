@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Bob
   ID: 0
-  Mesh: {fileID: 213743372949701809, guid: 97cb63a681382534a870f0524e998507, type: 3}
+  Mesh: {fileID: 919132149155446097, guid: 327aa6164c204e048aa628496c4d3157, type: 3}
   PV: 20
   CurrentPV: 20
   Def: 40
