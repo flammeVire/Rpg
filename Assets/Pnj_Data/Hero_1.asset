@@ -17,15 +17,15 @@ MonoBehaviour:
   Mesh: {fileID: 944443381627659885, guid: b8e6281435f620045ac369847c88c90b, type: 3}
   PV: 150
   CurrentPV: 150
-  Def: 40
-  Speed: 11
+  Def: 50
+  Speed: 10
   FirstAttack:
     attack: 0
     DamagePerAttack: 2
     NumberOfTarget: 1
     maxBullet: 30
     NumberBulletShoot: 3
-    currentBullet: 0
+    currentBullet: 30
     IsTargetAllies: 0
     effect: 0
     Modifier: 0

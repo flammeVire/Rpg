@@ -13,6 +13,7 @@ public class BattleManagement : MonoBehaviour
     bool IsTargetSelected;
     Pnj_Data Target;
 
+    public BattleUI_Manager battleUI_Manager;
 
     public Pnj_Data[] allPnj = new Pnj_Data[6];
     List<Pnj_Data> EnnemisList = new List<Pnj_Data>();
@@ -39,6 +40,7 @@ public class BattleManagement : MonoBehaviour
     {
         SelectedEnnemis();
         EndCombat();
+        Updateui();
     }
 
     IEnumerator Player_Turn()
@@ -64,6 +66,7 @@ public class BattleManagement : MonoBehaviour
         }
         else
         {
+
             StartCoroutine(Ennemis_Turn());
         }
         myself.Speed *= -1;
@@ -113,6 +116,7 @@ public class BattleManagement : MonoBehaviour
         Target = AllieList[0];
         Attack();
         CheckPv(Target);
+        battleUI_Manager.ClearSpell();
     }
 
     public void SelectedEnnemis()
@@ -157,18 +161,21 @@ public class BattleManagement : MonoBehaviour
     {
         AttaqueSelected = myself.FirstAttack;
         IsAttackSelected = true;
+        battleUI_Manager.ChangeSpell(AttaqueSelected, "Spell1");
     }
 
     public void Spell2()
     {
         AttaqueSelected = myself.SecondAttack;
         IsAttackSelected = true;
+        battleUI_Manager.ChangeSpell(AttaqueSelected, "Spell2");
     }
 
     public void Spell3()
     {
         AttaqueSelected = myself.ThirdAttack;
         IsAttackSelected = true;
+        battleUI_Manager.ChangeSpell(AttaqueSelected, "Spell3");
     }
     #endregion
 
@@ -214,17 +221,26 @@ public class BattleManagement : MonoBehaviour
         Debug.Log("Range attack");
         for (int i = 0; i < me.NumberBulletShoot; i++)
         {
-            if (target.Def > 0)
+            if (me.currentBullet > 0)
             {
-                Debug.Log("target def == " + target.Def);
-                target.Def -= me.DamagePerAttack;
-                Debug.Log("target def == " + target.Def);
+                if (target.Def > 0)
+                {
+                    Debug.Log("target def == " + target.Def);
+                    target.Def -= me.DamagePerAttack;
+                    Debug.Log("target def == " + target.Def);
+                }
+                else
+                {
+                    Debug.Log("target pv == " + target.CurrentPV);
+                    target.CurrentPV -= me.DamagePerAttack;
+                    Debug.Log("target pv == " + target.CurrentPV);
+                }
+                me.currentBullet--;
             }
             else
             {
-                Debug.Log("target pv == " + target.CurrentPV);
-                target.CurrentPV -= me.DamagePerAttack;
-                Debug.Log("target pv == " + target.CurrentPV);
+                me.currentBullet = me.maxBullet;
+                break;
             }
         }
     }
@@ -330,6 +346,7 @@ public class BattleManagement : MonoBehaviour
     {
 
         Pnj_Data pnjGoingToPlay = allPnj[0];
+        Pnj_Data nextPlayerTurn = allPnj[0];
         for (int i = 0; i < allPnj.Length; i++)
         {
             if (allPnj[i] != null)
@@ -339,21 +356,39 @@ public class BattleManagement : MonoBehaviour
                     pnjGoingToPlay = allPnj[i];
                 }
             }
+            
+        }
+
+
+        for(int i = 0;i < allPnj.Length; i++)
+        {
+            if(allPnj[i] != null)
+            {
+                if (allPnj[i] != pnjGoingToPlay)
+                {
+                    if (allPnj[i].Speed > nextPlayerTurn.Speed)
+                    {
+                        nextPlayerTurn = allPnj[i];
+                    }
+                }
+            }
         }
         Debug.Log("pnj going to play is: " + pnjGoingToPlay);
+        battleUI_Manager.NextPlayer.text = nextPlayerTurn.Name;
+        battleUI_Manager.CurrentPlayer.text = pnjGoingToPlay.Name;
         return pnjGoingToPlay;
     }
 
     void EndCombat()
     {
-        if(AllieList.Count <= 0 || EnnemisList.Count <= 0)
+        if (AllieList.Count <= 0 || EnnemisList.Count <= 0)
         {
             if (!isCombatEnd)
             {
                 StopAllCoroutines();
                 StartCoroutine(WaitToEnd());
             }
-            
+
             isCombatEnd = true;
         }
     }
@@ -368,7 +403,7 @@ public class BattleManagement : MonoBehaviour
         {
             AllieList.Remove(data);
         }
-        for(int i = 0;i < allPnj.Length;i++)
+        for (int i = 0; i < allPnj.Length; i++)
         {
             if (allPnj[i] != null && allPnj[i] == data)
             {
@@ -379,7 +414,8 @@ public class BattleManagement : MonoBehaviour
 
     void CheckPv(Pnj_Data target)
     {
-        if(target.CurrentPV <= 0)
+
+        if (target.CurrentPV <= 0)
         {
             kill(target.Mesh, target);
         }
@@ -397,6 +433,18 @@ public class BattleManagement : MonoBehaviour
             }
         }
         GameManager.instance.ReturnPlayerAtOldScene();
-        
+
+    }
+
+    void Updateui()
+    {
+        for (int i = 0; i < AllieList.Count; i++)
+        {
+            battleUI_Manager.UpdatePv(AllieList[i],true,i);
+        }
+        for (int i = 0; i < EnnemisList.Count; i++)
+        {
+            battleUI_Manager.UpdatePv(EnnemisList[i],false,i);
+        }
     }
 }
